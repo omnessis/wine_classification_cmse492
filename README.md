@@ -5,6 +5,9 @@ A clean, reproducible machine-learning project that trains and evaluates a
 [UCI Wine dataset](https://archive.ics.uci.edu/dataset/109/wine)
 (also available on [Kaggle](https://www.kaggle.com/datasets/brynja/wineuci)).
 
+This repo now uses a notebook-only workflow: the main end-to-end run lives in
+`wine_classification_notebook.ipynb`.
+
 The dataset contains 178 wine samples from three Italian cultivars, each
 described by 13 chemical measurements. The task is to predict which cultivar a
 wine belongs to.
@@ -17,10 +20,7 @@ wine belongs to.
 wine_classification_cmse492/
 ├── data/
 │   └── wine.csv                  # UCI Wine dataset (178 samples, 13 features)
-├── src/
-│   └── wine_classification.py    # Load → preprocess → train → evaluate
-├── tests/
-│   └── test_wine_classification.py  # 13 pytest unit tests
+├── wine_classification_notebook.ipynb  # Main notebook workflow
 ├── requirements.txt
 └── README.md
 ```
@@ -49,39 +49,22 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Run the classifier
+### 4. Run the notebook workflow
 
-```bash
-python src/wine_classification.py
-```
+Open `wine_classification_notebook.ipynb` and run the cells from top to bottom.
+The notebook will:
 
-Expected output:
+1. Install the needed packages if necessary
+2. Load `data/wine.csv`
+3. Split and standardize the data
+4. Train a logistic regression model
+5. Print accuracy and a classification report
+6. Validate the results and save a confusion matrix image
 
-```
-Dataset loaded: 178 samples, 13 features
-Train samples: 142 | Test samples: 36
-Model training complete.
+### 5. Optional: inspect the notebook output
 
-Test Accuracy: 0.9722
-
-Classification Report:
-              precision    recall  f1-score   support
-
-  Cultivar 1       1.00      1.00      1.00        12
-  Cultivar 2       0.93      1.00      0.97        14
-  Cultivar 3       1.00      0.90      0.95        10
-
-    accuracy                           0.97        36
-   ...
-
-Confusion matrix saved to confusion_matrix.png
-```
-
-### 5. Run the tests
-
-```bash
-python -m pytest tests/ -v
-```
+After running the notebook, you should see the printed accuracy, the
+classification report, and the saved confusion matrix image.
 
 ---
 
@@ -107,11 +90,12 @@ Color intensity, Hue, OD280/OD315 of diluted wines, Proline.
 
 ## Methodology
 
-1. **Load** `data/wine.csv`.
+1. **Load** `data/wine.csv` in the notebook.
 2. **Split** into 80 % training / 20 % test sets (stratified, `random_state=42`).
 3. **Standardise** features with `StandardScaler` (fitted on training data only).
 4. **Train** `sklearn.linear_model.LogisticRegression` (`max_iter=1000`).
 5. **Evaluate** with accuracy score, classification report, and confusion matrix.
+6. **Validate** with simple assertions on shape, labels, split size, and accuracy.
 
 ---
 
@@ -120,6 +104,8 @@ Color intensity, Hue, OD280/OD315 of diluted wines, Proline.
 | Metric   | Value |
 |----------|-------|
 | Accuracy | 97.2 % |
+
+The notebook also saves the confusion matrix to `wine_confusion_matrix.png`.
 
 ---
 

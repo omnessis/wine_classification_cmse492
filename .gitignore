@@ -27,6 +27,7 @@ htmlcov/
 
 # Generated output
 confusion_matrix.png
+wine_confusion_matrix.png
 
 # OS
 .DS_Store
